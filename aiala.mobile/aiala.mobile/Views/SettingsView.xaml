@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="aiala.mobile.Views.SettingsView"
+             xmlns:viewModelBase="clr-namespace:xappido.Mobile.ViewModels;assembly=xappido.Mobile"
+             xmlns:controls="clr-namespace:aiala.mobile.Controls"
+             xmlns:views="clr-namespace:aiala.mobile.Views"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:abstractions="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             xmlns:resx="clr-namespace:aiala.mobile.Resources"
+             ios:Page.UseSafeArea="True"
+             BackgroundColor="{StaticResource primaryColorDark}"
+             viewModelBase:ViewModelLocator.AutoWireViewModel="true"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+
+        <AbsoluteLayout VerticalOptions="FillAndExpand">
+            <StackLayout AbsoluteLayout.LayoutBounds="0,1,1,1" 
+                         AbsoluteLayout.LayoutFlags="All"
+                         Spacing="0">
+                <StackLayout VerticalOptions="Start"
+                             Spacing="0"
+                             HeightRequest="70"
+                             BackgroundColor="{Binding CurrentTask, Converter={StaticResource TaskStateColorConverter}}"
+                             IsVisible="{Binding CurrentTask, Converter={StaticResource ObjectToBooleanConverter}}">
+                    <Label HorizontalOptions="End" VerticalOptions="Center" Text="{Binding CurrentTask.Name}" FontSize="Medium"  TextColor="White" Margin="5,5,5,5" />
+                    <views:SchedulerView />
+                </StackLayout>
+                
+                <ScrollView BackgroundColor="White"
+                        VerticalOptions="FillAndExpand">
+                    <StackLayout Spacing="0">
+                        <StackLayout
+                            VerticalOptions="Start"
+                            Spacing="0"
+                            HeightRequest="100"
+                            BackgroundColor="{StaticResource primaryColor}">
+                            <Grid HorizontalOptions="CenterAndExpand">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="60" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="60" />
+                                </Grid.ColumnDefinitions>
+
+                                <Button
+                                    Grid.Column="0"
+                                    Style="{StaticResource labelButton}"
+                                    Text="{StaticResource far-times}"
+                                    FontSize="Large"
+                                    Margin="15,35,15,15"
+                                    WidthRequest="20"
+                                    HeightRequest="20"
+                                    TextColor="White"
+                                    BackgroundColor="Transparent"
+                                    Command="{Binding CancelCommand}"
+                                />
+
+                                <Label
+                                    Grid.Column="1"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"
+                                    Text="{x:Static resx:UiTexts.Settings_Title}"
+                                    FontSize="Large"
+                                    TextColor="White"
+                                    Margin="35,30,15,15"
+                                />
+                            </Grid>
+                        </StackLayout>
+
+                        <Grid
+                            HorizontalOptions="CenterAndExpand"
+                            Margin="10"
+                        >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Picker
+                                Grid.Row="0"
+                                Title="Language"
+                                ItemsSource="{Binding AvailableLanguages}"
+                                SelectedItem="{Binding Language}"
+                                ItemDisplayBinding="{Binding NativeName}"
+                            />
+                        </Grid>
+
+                        <Grid
+                            HorizontalOptions="CenterAndExpand"
+                            Margin="10,10,10,-10"
+                        >
+                            <Button
+                                Text="{Binding ToggleDevModeText}"
+                                Command="{Binding ToggleDevModeCommand}"
+                            />
+                        </Grid>
+                        
+                        <Grid
+                            HorizontalOptions="CenterAndExpand"
+                            Margin="10"
+                            IsVisible="{Binding IsDevModeActive}"
+                        >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Picker
+                                Grid.Row="0"
+                                Title="Preset"
+                                ItemsSource="{Binding Presets}"
+                                SelectedItem="{Binding SelectedPreset}"
+                                SelectedIndex="0"
+                            />
+
+                            <Label
+                                Grid.Row="1"
+                                Text="Sts Base Url"
+                                Margin="0,10,0,-10"
+                            />
+                            <Entry
+                                Grid.Row="2"
+                                FontSize="Small"
+                                Text="{Binding StsBaseUrl}"
+                            />
+
+                            <Label
+                                Grid.Row="3"
+                                Text="Api Base Url"
+                                Margin="0,10,0,-10"
+                            />
+                            <Entry
+                                Grid.Row="4"
+                                FontSize="Small"
+                                Text="{Binding ApiBaseUrl}"
+                            />
+
+                            <Label
+                                Grid.Row="5"
+                                Text="Public Web Base Url"
+                                Margin="0,10,0,-10"
+                            />
+                            <Entry
+                                Grid.Row="6"
+                                FontSize="Small"
+                                Text="{Binding PublicWebBaseUrl}"
+                            />
+
+                            <Label
+                                Grid.Row="7"
+                                Text="Client ID"
+                                Margin="0,10,0,-10"
+                            />
+                            <Entry
+                                Grid.Row="8"
+                                FontSize="Small"
+                                Text="{Binding ClientId}"
+                            />
+
+                            <Label
+                                Grid.Row="9"
+                                Text="Client Secret"
+                                Margin="0,10,0,-10"
+                            />
+                            <Entry
+                                Grid.Row="10"
+                                FontSize="Small"
+                                Text="{Binding ClientSecret}"
+                                IsPassword="True"
+                            />
+
+                            <Label
+                                Grid.Row="11"
+                                Text="Local IP (%IP%)"
+                                Margin="0,10,0,-10"
+                            />
+                            <Entry
+                                Grid.Row="12"
+                                FontSize="Small"
+                                Text="{Binding LocalIP}"
+                            />
+
+                            <Label
+                                Grid.Row="13"
+                                Text="Schedule Refresh Time in Minutes"
+                                Margin="0,10,0,-10"
+                            />
+                            <Entry
+                                Grid.Row="14"
+                                FontSize="Small"
+                                Text="{Binding ScheduleRefreshMinutes}"
+                            />
+                        </Grid>
+                    </StackLayout>
+                </ScrollView>
+            </StackLayout>
+
+            <abstractions:CircleImage
+                Margin="20,5,20,20"
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                AbsoluteLayout.LayoutBounds="0,0,-1,0.5"
+                BorderColor="{StaticResource primaryColorDark}"
+                FillColor="{StaticResource primaryColorDark}"
+                BorderThickness="2"
+                HeightRequest="90"
+                WidthRequest="90"
+                Aspect="AspectFill"
+                IsVisible="{Binding CurrentTask, Converter={StaticResource ObjectToBooleanConverter}}">
+                <abstractions:CircleImage.Source>
+                    <UriImageSource Uri="{Binding CurrentTask.Picture.PictureUrl}" />
+                </abstractions:CircleImage.Source>
+            </abstractions:CircleImage>
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>

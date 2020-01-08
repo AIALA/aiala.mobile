@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="aiala.mobile.Views.PictureView"
+             xmlns:viewModelBase="clr-namespace:xappido.Mobile.ViewModels;assembly=xappido.Mobile"
+             xmlns:controls="clr-namespace:aiala.mobile.Controls"
+             xmlns:models="clr-namespace:aiala.mobile.Models"
+             xmlns:views="clr-namespace:aiala.mobile.Views"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:abstractions="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             xmlns:resx="clr-namespace:aiala.mobile.Resources"
+             xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
+             ios:Page.UseSafeArea="True"
+             BackgroundColor="{StaticResource primaryColorDark}"
+             viewModelBase:ViewModelLocator.AutoWireViewModel="true"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+
+        <AbsoluteLayout VerticalOptions="FillAndExpand">
+            <StackLayout AbsoluteLayout.LayoutBounds="0,1,1,1" 
+                         AbsoluteLayout.LayoutFlags="All"
+                         Spacing="0">
+
+                <StackLayout VerticalOptions="Start"
+                             Spacing="0"
+                             HeightRequest="70"
+                             BackgroundColor="{Binding CurrentTask, Converter={StaticResource TaskStateColorConverter}}">
+
+                    <Label HorizontalOptions="End" VerticalOptions="Center" Text="{Binding CurrentTask.Name}" FontSize="Medium"  TextColor="White" Margin="5,5,5,5" />
+
+                    <views:SchedulerView />
+                </StackLayout>
+
+                <ScrollView BackgroundColor="White"
+                        VerticalOptions="FillAndExpand">
+
+                    <StackLayout Spacing="0">
+
+                        <StackLayout VerticalOptions="Start"
+                             Spacing="0"
+                             HeightRequest="100"
+                             BackgroundColor="{StaticResource primaryColorDark}">
+                            <Label HorizontalOptions="Center" VerticalOptions="CenterAndExpand" Text="{x:Static resx:UiTexts.Communicate_Title}" FontSize="Large" TextColor="White" />
+                        </StackLayout>
+
+                        <flv:FlowListView FlowColumnCount="3" SeparatorVisibility="Default" HasUnevenRows="false"
+                                          VerticalScrollBarVisibility="Never"
+                                          FlowItemTappedCommand="{Binding PictureTappedCommand}"
+	                                      FlowItemsSource="{Binding Pictures}"
+                                          VerticalOptions="Fill"
+                                          RowHeight="125"
+                                          IsPullToRefreshEnabled="True"
+                                          RefreshCommand="{Binding RefreshCommand}"
+                                          IsRefreshing="{Binding IsGalleryLoading}"
+                                          RefreshControlColor="{StaticResource primaryColor}">
+
+                            <flv:FlowListView.FlowColumnTemplate>
+                                <DataTemplate>
+                                    <Frame CornerRadius="5" BorderColor="White" Padding="0" Margin="3" HasShadow="False" IsClippedToBounds="True" BackgroundColor="WhiteSmoke">
+                                        <Image Source="{Binding PictureUrl, Converter={StaticResource StringToImageSourceConverter}}"
+                                               Aspect="AspectFill"/>
+                                    </Frame>
+                                </DataTemplate>
+                            </flv:FlowListView.FlowColumnTemplate>
+                        </flv:FlowListView>
+
+                    </StackLayout>
+                </ScrollView>
+
+                <ContentView HeightRequest="1" BackgroundColor="LightGray" />
+
+              <StackLayout VerticalOptions="End"
+                           BackgroundColor="White"
+                           Orientation="Horizontal">
+
+                <views:NavigationButtonBarView />
+
+              </StackLayout>
+
+            </StackLayout>
+
+            <Button Style="{StaticResource emergencyButton}"
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    AbsoluteLayout.LayoutBounds="1.0,0.975,-1,-1"
+                    Text="{StaticResource far-bullhorn}"
+                    Command="{Binding EmergencyCommand}"
+                    />
+
+            <Button Text="{StaticResource far-camera}"
+                                Style="{StaticResource labelButton}"
+                                FontSize="Large"
+                                IsEnabled="{Binding IsCameraEnabled}"
+                                Command="{Binding TakePictureCommand}"
+                    HeightRequest="50"
+                    WidthRequest="50"
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    AbsoluteLayout.LayoutBounds="0.02,0.87,-1,-1"
+                    CornerRadius="25"
+                    BackgroundColor="{StaticResource primaryColor}"
+                    TextColor="White"
+                />
+            
+            <abstractions:CircleImage
+                Margin="20,5,20,20"
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                AbsoluteLayout.LayoutBounds="0,0,-1,0.5"
+                BorderColor="{Binding CurrentTask, Converter={StaticResource TaskStateColorConverter}}"
+                FillColor="{Binding CurrentTask, Converter={StaticResource TaskStateColorConverter}}"
+                BorderThickness="2"
+                HeightRequest="90"
+                WidthRequest="90"
+                Aspect="AspectFill"
+                Source="{Binding CurrentTask.Picture.PictureUrl, Converter={StaticResource StringToImageSourceConverter}}">
+            </abstractions:CircleImage>
+
+        </AbsoluteLayout>
+
+    </ContentPage.Content>
+</ContentPage>

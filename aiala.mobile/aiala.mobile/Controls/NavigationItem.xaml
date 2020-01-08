@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Grid xmlns="http://xamarin.com/schemas/2014/forms" 
+      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      xmlns:controls="clr-namespace:aiala.mobile.Controls"
+      x:Name="this"
+      x:Class="aiala.mobile.Controls.NavigationItem">
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="50" />
+        <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+    <controls:FaLabel Text="{Binding Icon, Source={x:Reference this}}" Grid.Column="0" HeightRequest="22" WidthRequest="22" FontSize="Medium" />
+    <Label Text="{Binding Text, Source={x:Reference this}}" Grid.Column="1" IsEnabled="{Binding IsEnabled, Source={x:Reference this}}" />
+    <Grid.GestureRecognizers>
+        <TapGestureRecognizer Command="{Binding Command, Source={x:Reference this}}" CommandParameter="{Binding CommandParameter, Source={x:Reference this}}" />
+    </Grid.GestureRecognizers>
+</Grid>

@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="aiala.mobile.Views.TaskOverdueView"
+             xmlns:resx="clr-namespace:aiala.mobile.Resources"
+             xmlns:viewModelBase="clr-namespace:xappido.Mobile.ViewModels;assembly=xappido.Mobile"
+             viewModelBase:ViewModelLocator.AutoWireViewModel="true">
+  <ContentView.Content>
+        <StackLayout Margin="5"
+                     IsVisible="{Binding CurrentTask, Converter={x:StaticResource TaskOffsetExpiredToVisiblityConverter}}" >
+            
+            <Label Text="{x:Static resx:UiTexts.TaskOverdue_TimeRanOut}"
+                                   FontSize="Small"
+                                   HorizontalOptions="Center"
+                                   IsVisible="{Binding CurrentTask, Converter={x:StaticResource TaskOffsetExpiredToVisiblityConverter}}" />
+
+            <Label Text="{x:Static resx:UiTexts.TaskOverdue_NeedHelp}" 
+                                   FontSize="Medium"
+                                   HorizontalOptions="Center"
+                                   IsVisible="{Binding CurrentTask, Converter={x:StaticResource TaskOffsetExpiredToVisiblityConverter}}" />
+
+            <Button Text="{x:Static resx:UiTexts.TaskOverdue_NeedMoreTime}"
+                                        HorizontalOptions="Center"
+                                        BackgroundColor="{StaticResource taskStateDelay}"
+                                        TextColor="White"
+                                        HeightRequest="35"
+                                        WidthRequest="150"
+                                        FontSize="Small"
+                                        Padding="0"
+                                        Command="{Binding AddTaskOffsetCommand}"
+                                        IsVisible="{Binding CurrentTask, Converter={x:StaticResource TaskOffsetExpiredToVisiblityConverter}}" />
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="aiala.mobile.Views.SchedulerView"
+             xmlns:viewModelBase="clr-namespace:xappido.Mobile.ViewModels;assembly=xappido.Mobile"
+             viewModelBase:ViewModelLocator.AutoWireViewModel="true"
+             HorizontalOptions="FillAndExpand"
+             VerticalOptions="FillAndExpand">
+  <ContentView.Content>
+        <Grid HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand"
+            Margin="0,0,5,5"
+            HeightRequest="30">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="35*" />
+                <ColumnDefinition Width="65*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="2" />
+            </Grid.RowDefinitions>
+            <RelativeLayout Grid.Column="1" Grid.Row="0">
+                <BoxView BackgroundColor="WhiteSmoke" 
+                    HeightRequest="10" WidthRequest="3"
+                    Margin="0,2,0,0"
+                    RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.3, Constant=0}"/>
+            </RelativeLayout>
+            <RelativeLayout Grid.Column="1" Grid.Row="1" VerticalOptions="FillAndExpand" x:Name="scheduleLayout">
+                <BoxView x:Name="backgroundBox"
+                    BackgroundColor="WhiteSmoke"
+                    HeightRequest="14"
+                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
+                    CornerRadius="3"/>
+            </RelativeLayout>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

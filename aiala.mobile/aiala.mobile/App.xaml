@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xappidoConverters="clr-namespace:xappido.Mobile.Converters;assembly=xappido.Mobile"
+             xmlns:controls="clr-namespace:aiala.mobile.Controls"
+             xmlns:converters="clr-namespace:aiala.mobile.Converters"
+             xmlns:s="clr-namespace:System;assembly=netstandard"
+             x:Class="aiala.mobile.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <xappidoConverters:ConverterDictionary/>
+                <ResourceDictionary>
+                    <converters:TaskFilterConverter x:Key="TaskFilterConverter" />
+                    <controls:TaskTemplateSelector x:Key="TaskTemplateSelector" />
+                    <converters:NavigationStateConverter x:Key="NavigationStateConverter" />
+                    <converters:TaskFeedbackColorConverter x:Key="TaskFeedbackColorConverter" />
+                    <converters:TaskStateConverter x:Key="TaskStateConverter" />
+                    <converters:TaskStateColorConverter x:Key="TaskStateColorConverter" />
+                    <converters:ObjectToBooleanConverter x:Key="ObjectToBooleanConverter" />
+                    <converters:EmergencyStateToVisibilityConverter x:Key="EmergencyStateToVisibilityConverter" />
+                    <xappidoConverters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+                    <converters:TaskOffsetExpiredToVisiblityConverter x:Key="TaskOffsetExpiredToVisiblityConverter" />
+                    <converters:TaskOverdueToVisiblityConverter x:Key="TaskOverdueToVisiblityConverter" />
+                    <converters:MarkdownLabelConverter x:Key="MarkdownLabelConverter" />
+                    <converters:StringToImageSourceConverter x:Key="StringToImageSourceConverter" />
+                </ResourceDictionary>
+                <controls:FontAwesome />
+                <ResourceDictionary>
+                    <Color x:Key="primaryColor">#1999B2</Color>
+                    <Color x:Key="primaryColorDark">#13798D</Color>
+                    <Color x:Key="textColorLight">White</Color>
+                    <Color x:Key="textColorDark">Black</Color>
+                    <Color x:Key="emergencyColor">#7A0000</Color>
+                    <Color x:Key="buttonTextColor">#7B7B7B</Color>
+                    <Color x:Key="buttonSelectedTextColor">#1999B2</Color>
+
+                    <Color x:Key="taskStateUnknown">#00614B</Color>
+                    <Color x:Key="taskStateUndone">#13798D</Color>
+                    <Color x:Key="taskStateDone">#00614B</Color>
+                    <Color x:Key="taskStateDelay">#7F7305</Color>
+                    
+                    <Color x:Key="feedbackUnknown">#B5B5B5</Color>
+                    <Color x:Key="feedbackGreen">#008466</Color>
+                    <Color x:Key="feedbackYellow">#AF9800</Color>
+                    <Color x:Key="feedbackRed">#7A0000</Color>
+
+                    <Color x:Key="currentTaskBackground">WhiteSmoke</Color>
+                    <Color x:Key="taskBackground">White</Color>
+
+                    <Color x:Key="defaultImageBackground">#C5C5C5</Color>
+
+                    <Style x:Key="faLabel" TargetType="Label">
+                        <Setter Property="FontFamily">
+                            <OnPlatform x:TypeArguments="x:String"
+                                        Android="fa-regular-400.ttf#Font Awesome 5 Pro Regular"
+                                        iOS="Font Awesome 5 Pro" />
+                        </Setter>
+                    </Style>
+
+                    <Style TargetType="Button">
+                        <Setter Property="Padding">
+                            <OnPlatform x:TypeArguments="x:String"
+                                        iOS="5,0,5,0" />
+                        </Setter>
+                    </Style>
+                    
+                    <Style x:Key="labelButton" TargetType="Button">
+                        <Setter Property="FontFamily">
+                            <OnPlatform x:TypeArguments="x:String"
+                                        Android="fa-regular-400.ttf#Font Awesome 5 Pro Regular"
+                                        iOS="Font Awesome 5 Pro" />
+                        </Setter>
+                    </Style>
+                    <Style x:Key="emergencyButton" TargetType="Button" BasedOn="{StaticResource labelButton}">
+                        <Setter Property="TextColor" Value="White" />
+                        <Setter Property="FontSize" Value="Large" />
+                        <Setter Property="BackgroundColor" Value="{StaticResource emergencyColor}" />
+                        <Setter Property="HeightRequest" Value="90" />
+                        <Setter Property="WidthRequest" Value="90" />
+                        <Setter Property="BorderRadius" Value="45" />
+                        <Setter Property="Margin" Value="10" />
+                    </Style>
+                    <Style x:Key="navigationButton" TargetType="Button" BasedOn="{StaticResource labelButton}">
+                        <Setter Property="TextColor" Value="{StaticResource buttonTextColor}" />
+                        <Setter Property="FontSize" Value="Large" />
+                        <Setter Property="HeightRequest" Value="50" />
+                        <Setter Property="WidthRequest" Value="50" />
+                        <Setter Property="BackgroundColor" Value="Transparent" />
+                        <Setter Property="VisualStateManager.VisualStateGroups">
+                            <VisualStateGroupList>
+                                <VisualStateGroup x:Name="NavigationButtonStateGroup">
+                                    
+                                    <VisualState x:Name="Disabled">
+                                        <VisualState.Setters>
+                                            <Setter Property="TextColor" Value="{StaticResource buttonSelectedTextColor}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateGroupList>
+                        </Setter>
+                    </Style>
+
+                    <s:Boolean x:Key="True">True</s:Boolean>
+                    <s:Boolean x:Key="False">False</s:Boolean>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
