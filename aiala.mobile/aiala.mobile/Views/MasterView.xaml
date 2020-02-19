@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="aiala.mobile.Views.MasterView"
+             xmlns:viewModelBase="clr-namespace:xappido.Mobile.ViewModels;assembly=xappido.Mobile"
+             xmlns:local="clr-namespace:aiala.mobile.Controls"
+             viewModelBase:ViewModelLocator.AutoWireViewModel="true"
+             xmlns:abstractions="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             xmlns:helpers="clr-namespace:aiala.mobile"
+             xmlns:resx="clr-namespace:aiala.mobile.Resources"
+             Title="Master Page">
+    <ContentPage.Content>
+        <Grid BackgroundColor="Transparent">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30*" />
+                <RowDefinition Height="70*" />
+            </Grid.RowDefinitions>
+            <Grid BackgroundColor="{StaticResource primaryColor}">
+                <StackLayout Padding="0,20,0,0" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <abstractions:CircleImage
+                        WidthRequest="85"
+                        HeightRequest="85"
+                        Aspect="AspectFill"
+                        Source="{Binding ProfileImageUri, Converter={StaticResource StringToImageSourceConverter}}">
+                    </abstractions:CircleImage>
+                    <Label Text="{Binding Fullname}" TextColor="{StaticResource textColorLight}" FontSize="Large" />
+                </StackLayout>
+            </Grid>
+
+            <StackLayout Margin="20,20,20,0" Grid.Row="1" Spacing="15">
+
+                <local:NavigationItem Text="{x:Static resx:UiTexts.Master_Logout}" Icon="{StaticResource far-sign-out}" Command="{Binding LogoutCommand}" />
+
+                <ContentView HeightRequest="1" BackgroundColor="Gray" />
+
+                <local:NavigationItem Text="{x:Static resx:UiTexts.Master_Settings}" Icon="{StaticResource far-cogs}" Command="{Binding SettingsCommand}" />
+                
+                <ContentView HeightRequest="1" BackgroundColor="Gray" />
+
+                <StackLayout IsVisible="{Binding IsDevMode}" Spacing="15">
+                    <local:NavigationItem Text="Reload Data" Icon="{StaticResource far-download}" Command="{Binding LoadDataCommand}" />
+
+                    <ContentView HeightRequest="1" BackgroundColor="Gray" />
+
+                    <local:NavigationItem Text="Clean Picture Library" Icon="{StaticResource far-trash-alt}" Command="{Binding CleanPictureLibraryCommand}" />
+
+                    <ContentView HeightRequest="1" BackgroundColor="Gray" />
+
+                    <local:NavigationItem Text="Start Processing" Icon="{StaticResource far-play}"
+                                      Command="{Binding StartProcessingCommand}"
+                                      IsEnabled="{Binding IsBackgroundProcessing, Converter={StaticResource InverseBooleanConverter}}"/>
+
+                    <ContentView HeightRequest="1" BackgroundColor="Gray" />
+
+                    <local:NavigationItem Text="Stop Processing" Icon="{StaticResource far-stop}"
+                                      Command="{Binding StopProcessingCommand}"
+                                      IsEnabled="{Binding IsBackgroundProcessing}" />
+
+                    <ContentView HeightRequest="1" BackgroundColor="Gray" />
+
+                    <StackLayout VerticalOptions="End">
+                        <Label FontSize="Micro" IsEnabled="False">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Background process running: " />
+                                    <Span Text="{Binding IsBackgroundProcessing, Mode=OneWay}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                        <Label FontSize="Micro" IsEnabled="False">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Pending work: " />
+                                    <Span Text="{Binding PendingUpdates, Mode=OneWay}" />
+                                    <Span Text=" items" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                        <Label Text="{Binding Source={x:Static helpers:DateTimeHelper.Now}, StringFormat='{}{0:MM.dd.yyyy hh\\:mm}'}" FontSize="Micro" IsEnabled="False" />
+                    </StackLayout>
+                </StackLayout>
+
+            </StackLayout>
+            
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

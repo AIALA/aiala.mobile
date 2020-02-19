@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="aiala.mobile.Views.EmergencyView"
+             xmlns:viewModelBase="clr-namespace:xappido.Mobile.ViewModels;assembly=xappido.Mobile"
+             xmlns:controls="clr-namespace:aiala.mobile.Controls"
+             xmlns:models="clr-namespace:aiala.mobile.Models"
+             xmlns:views="clr-namespace:aiala.mobile.Views"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:abstractions="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             xmlns:resx="clr-namespace:aiala.mobile.Resources"
+             ios:Page.UseSafeArea="True"
+             BackgroundColor="{StaticResource primaryColorDark}"
+             viewModelBase:ViewModelLocator.AutoWireViewModel="true"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+
+        <AbsoluteLayout VerticalOptions="FillAndExpand">
+            <StackLayout AbsoluteLayout.LayoutBounds="0,1,1,1" 
+                         AbsoluteLayout.LayoutFlags="All"
+                         Spacing="0">
+
+                <StackLayout VerticalOptions="Start"
+                             Spacing="0"
+                             HeightRequest="70"
+                             BackgroundColor="{Binding CurrentTask, Converter={StaticResource TaskStateColorConverter}}">
+
+                    <Label HorizontalOptions="End" VerticalOptions="Center" Text="{Binding CurrentTask.Name}" FontSize="Medium"  TextColor="White" Margin="5,5,5,5" />
+
+                    <views:SchedulerView />
+                </StackLayout>
+
+                <ScrollView BackgroundColor="White"
+                        VerticalOptions="FillAndExpand">
+
+                    <StackLayout Spacing="0">
+
+                        <StackLayout VerticalOptions="Start"
+                             Spacing="0"
+                             HeightRequest="100"
+                             BackgroundColor="{StaticResource emergencyColor}">
+                            <Label HorizontalOptions="Center" VerticalOptions="CenterAndExpand" Text="{x:Static resx:UiTexts.Emergency_Title}" FontSize="Large" TextColor="White" />
+                        </StackLayout>
+
+
+                        <Grid HorizontalOptions="CenterAndExpand"
+                              Margin="10,10,10,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackLayout Grid.Column="0"
+                                         IsVisible="{Binding Config1Contact, Converter={StaticResource ObjectToBooleanConverter}}"
+                                         HorizontalOptions="Center">
+                                <Grid HorizontalOptions="Center">
+                                  <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="85" />
+                                  </Grid.ColumnDefinitions>
+                                  
+                                    <abstractions:CircleImage
+                                        BorderColor="WhiteSmoke"
+                                        BorderThickness="1"
+                                        Aspect="AspectFit"
+                                        FillColor="WhiteSmoke"
+                                        HeightRequest="85"
+                                        WidthRequest="85"
+                                        Source="{Binding Config1Contact.PictureUrl, Converter={StaticResource StringToImageSourceConverter}}">
+                                    </abstractions:CircleImage>
+                                  
+                                </Grid>
+
+                                <Label Text="{Binding Config1Contact.Name}" FontSize="Small" HorizontalOptions="Center" />
+
+                            </StackLayout>
+
+                            <StackLayout Grid.Column="1"
+                                         IsVisible="{Binding Config2Contact, Converter={StaticResource ObjectToBooleanConverter}}"
+                                         HorizontalOptions="Center">
+                              <Grid HorizontalOptions="Center">
+                                <Grid.ColumnDefinitions>
+                                  <ColumnDefinition Width="85" />
+                                </Grid.ColumnDefinitions>
+                                
+                                    <abstractions:CircleImage
+                                        BorderColor="WhiteSmoke"
+                                        BorderThickness="1"
+                                        Aspect="AspectFit"
+                                        FillColor="WhiteSmoke"
+                                        HeightRequest="85"
+                                        WidthRequest="85"
+                                        Source="{Binding Config2Contact.PictureUrl, Converter={StaticResource StringToImageSourceConverter}}">
+                                    </abstractions:CircleImage>
+                                
+                                </Grid>
+
+                                <Label Text="{Binding Config2Contact.Name}" FontSize="Small" HorizontalOptions="Center" />
+
+                            </StackLayout>
+
+                        </Grid>
+
+                        <StackLayout Margin="15">
+                            <Button Text="{x:Static resx:UiTexts.Emergency_EndEmergency}"
+                                    BackgroundColor="{StaticResource feedbackGreen}"
+                                    TextColor="White"
+                                    Padding="15,0,15,0"
+                                    Margin="0,0,0,15"
+                                    HorizontalOptions="CenterAndExpand"
+                                    Command="{Binding EmergencyStopCommand}"
+                                    />
+                            
+                            <Label IsVisible="{Binding EmergencyState, Converter={StaticResource EmergencyStateToVisibilityConverter}, ConverterParameter={x:Static models:EmergencyState.Bad}}"
+                                   FormattedText="{Binding EmergencyInformation.EmergencyTextBad, Converter={StaticResource MarkdownLabelConverter}, ConverterParameter={Binding EmergencyTextLinkCommand}}"
+                                   HorizontalOptions="CenterAndExpand" />
+
+                            <Label IsVisible="{Binding EmergencyState, Converter={StaticResource EmergencyStateToVisibilityConverter}, ConverterParameter={x:Static models:EmergencyState.Improving}}"
+                                   FormattedText="{Binding EmergencyInformation.EmergencyTextImproving, Converter={StaticResource MarkdownLabelConverter}, ConverterParameter={Binding EmergencyTextLinkCommand}}"
+                                   HorizontalOptions="CenterAndExpand" />
+                        </StackLayout>
+
+                    </StackLayout>
+                </ScrollView>
+
+                <!--<ContentView HeightRequest="1" BackgroundColor="LightGray" />-->
+
+                <StackLayout VerticalOptions="End"
+                             BackgroundColor="White"
+                             Orientation="Vertical"
+                             HeightRequest="130">
+
+                    <Label Text="{x:Static resx:UiTexts.Emergency_MoodQuestion}" HorizontalOptions="CenterAndExpand" />
+
+                    <Grid HorizontalOptions="CenterAndExpand"
+                          VerticalOptions="CenterAndExpand"
+                          Margin="50,0,50,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackLayout Grid.Column="0">
+                            <Button 
+                                HorizontalOptions="Center"
+                                Style="{StaticResource labelButton}"
+                                BackgroundColor="{StaticResource feedbackRed}"
+                                Text="{StaticResource far-frown}"
+                                Command="{Binding EmergencyStateCommand}"
+                                CommandParameter="{x:Static models:EmergencyState.Bad}"
+                                CornerRadius="25"
+                                HeightRequest="50"
+                                WidthRequest="50"
+                                TextColor="White"
+                                FontSize="Large" />
+
+                            <Label Text="{x:Static resx:UiTexts.Emergency_MoodBad}" HorizontalOptions="Center" />
+                        </StackLayout>
+
+                        <StackLayout Grid.Column="1">
+                            <Button 
+                                HorizontalOptions="Center"
+                                Style="{StaticResource labelButton}"
+                                BackgroundColor="{StaticResource feedbackYellow}"
+                                Text="{StaticResource far-meh}"
+                                Command="{Binding EmergencyStateCommand}"
+                                CommandParameter="{x:Static models:EmergencyState.Improving}"
+                                CornerRadius="25"
+                                HeightRequest="50"
+                                WidthRequest="50"
+                                TextColor="White"
+                                FontSize="Large" />
+
+                            <Label Text="{x:Static resx:UiTexts.Emergency_MoodImproving}" HorizontalOptions="Center" />
+                        </StackLayout>
+
+                        <StackLayout Grid.Column="2">
+                            <Button 
+                                HorizontalOptions="Center"
+                                Style="{StaticResource labelButton}"
+                                BackgroundColor="{StaticResource feedbackGreen}"
+                                Text="{StaticResource far-smile}"
+                                Command="{Binding EmergencyStateCommand}"
+                                CommandParameter="{x:Static models:EmergencyState.Better}"
+                                CornerRadius="25"
+                                HeightRequest="50"
+                                WidthRequest="50"
+                                TextColor="White"
+                                FontSize="Large" />
+
+                            <Label Text="{x:Static resx:UiTexts.Emergency_MoodBetter}" HorizontalOptions="Center" />
+                        </StackLayout>
+                    </Grid>
+
+                </StackLayout>
+
+            </StackLayout>
+
+            <abstractions:CircleImage
+                Margin="20,5,20,20"
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                AbsoluteLayout.LayoutBounds="0,0,-1,0.5"
+                BorderColor="{Binding CurrentTask, Converter={StaticResource TaskStateColorConverter}}"
+                FillColor="{Binding CurrentTask, Converter={StaticResource TaskStateColorConverter}}"
+                BorderThickness="2"
+                HeightRequest="90"
+                WidthRequest="90"
+                Aspect="AspectFill"
+                Source="{Binding CurrentTask.Picture.PictureUrl, Converter={StaticResource StringToImageSourceConverter}}">
+            </abstractions:CircleImage>
+
+        </AbsoluteLayout>
+
+    </ContentPage.Content>
+</ContentPage>

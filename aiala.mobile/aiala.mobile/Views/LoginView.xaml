@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="aiala.mobile.Views.LoginView"
+             xmlns:viewModelBase="clr-namespace:xappido.Mobile.ViewModels;assembly=xappido.Mobile"
+             xmlns:local="clr-namespace:aiala.mobile.Extensions;assembly=aiala.mobile"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             xmlns:resx="clr-namespace:aiala.mobile.Resources"
+             ios:Page.UseSafeArea="True"
+             viewModelBase:ViewModelLocator.AutoWireViewModel="true"
+             BackgroundColor="White"
+             NavigationPage.HasNavigationBar="false">
+    <ContentPage.Content>
+        <Grid BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="200" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Image Source="{local:ImageResource Assets/logo.jpg}"
+                   Aspect="AspectFit"
+                   VerticalOptions="CenterAndExpand"
+                   Margin="5"
+                   HeightRequest="200" />
+
+            <StackLayout Grid.Row="1" BackgroundColor="{StaticResource primaryColor}">
+
+                <Label Text="{x:Static resx:UiTexts.Login_Welcome}"
+                       TextColor="{StaticResource textColorLight}"
+                       FontSize="Large"
+                       HorizontalOptions="CenterAndExpand"
+                       Margin="0,25,0,0"
+                       />
+
+                <Label Text="{x:Static resx:UiTexts.Login_EnterCredentials}"
+                       TextColor="{StaticResource textColorLight}"
+                       FontSize="Small"
+                       HorizontalOptions="CenterAndExpand"
+                       />
+
+                <StackLayout IsVisible="{Binding HasConnectivity, Converter={StaticResource InverseBooleanConverter}}">
+                    <Label Text="{x:Static resx:UiTexts.Login_NoNetwork}"
+                           HorizontalOptions="CenterAndExpand"
+                           VerticalOptions="CenterAndExpand"
+                           TextColor="{StaticResource textColorLight}"
+                           FontSize="Small" />
+                </StackLayout>
+
+                <StackLayout IsVisible="{Binding HasConnectivity}" VerticalOptions="End">
+
+                    <Label Text="{x:Static resx:UiTexts.Login_AlreadyLoggedIn}"
+                           HorizontalOptions="CenterAndExpand"
+                           VerticalOptions="CenterAndExpand"
+                           TextColor="{StaticResource textColorLight}"
+                           FontSize="Small"
+                           IsVisible="{Binding IsAuthenticated}" />
+
+                    <Label Text="{Binding ErrorMessage}"
+                           HorizontalOptions="CenterAndExpand"
+                           VerticalOptions="CenterAndExpand"
+                           TextColor="{StaticResource textColorLight}"
+                           FontSize="Small" />
+
+                    <Label Text="{Binding StatusMessage}"
+                           HorizontalOptions="CenterAndExpand"
+                           VerticalOptions="CenterAndExpand"
+                           TextColor="{StaticResource textColorLight}"
+                           FontSize="Small" />
+
+                    <Grid HorizontalOptions="CenterAndExpand"
+                          Margin="15">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackLayout VerticalOptions="End">
+                            <Label Text="{x:Static resx:UiTexts.Login_RegisterLink}"
+                                   FontSize="Micro"
+                                   TextColor="{StaticResource textColorLight}"
+                                   TextDecorations="Underline">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding OpenLinkCommand}" CommandParameter="{Binding RegistrationLink}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                            <Label Text="{x:Static resx:UiTexts.Login_ForgotPasswordLink}"
+                                   FontSize="Micro"
+                                   TextColor="{StaticResource textColorLight}"
+                                   TextDecorations="Underline">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding OpenLinkCommand}" CommandParameter="{Binding PasswordResetLink}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </StackLayout>
+
+                        <Button Grid.Column="1"
+                                Text="{x:Static resx:UiTexts.Login_LoginButton}"
+                                Command="{Binding LoginCommand}"
+                                IsEnabled="{Binding IsButtonEnabled}"
+                                BackgroundColor="{StaticResource textColorLight}"
+                                TextColor="{StaticResource buttonTextColor}"
+                                HeightRequest="30"
+                                WidthRequest="100"
+                                CornerRadius="5">
+                        </Button>
+                    </Grid>
+                    
+                    <Button
+                        Margin="15"
+                        HorizontalOptions="Start"
+                        Style="{StaticResource labelButton}"
+                        Text="{StaticResource far-cog}"
+                        TextColor="White"
+                        BackgroundColor="Transparent"
+                        HeightRequest="25"
+                        WidthRequest="22"
+                        Command="{Binding SettingsCommand}"
+                    ></Button>
+                </StackLayout>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

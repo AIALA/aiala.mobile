@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Label xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="aiala.mobile.Controls.FaLabel">
+    <Label.FontFamily>
+        <OnPlatform x:TypeArguments="x:String"
+                    Android="fa-regular-400.ttf#Font Awesome 5 Pro Regular"
+                    iOS="Font Awesome 5 Pro" />
+    </Label.FontFamily>
+</Label>

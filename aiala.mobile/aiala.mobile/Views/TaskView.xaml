@@ -1,0 +1,242 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="aiala.mobile.Views.TaskView"
+             xmlns:viewModelBase="clr-namespace:xappido.Mobile.ViewModels;assembly=xappido.Mobile"
+             xmlns:models="clr-namespace:aiala.mobile.Models"
+             xmlns:resx="clr-namespace:aiala.mobile.Resources"
+             xmlns:views="clr-namespace:aiala.mobile.Views"
+             xmlns:abstractions="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             xmlns:local="clr-namespace:aiala.mobile.Extensions;assembly=aiala.mobile"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             ios:Page.UseSafeArea="True"
+             BackgroundColor="{StaticResource primaryColorDark}"
+             viewModelBase:ViewModelLocator.AutoWireViewModel="true"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ActiveIndicator" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="{StaticResource primaryColor}" />
+            </Style>
+            <Style x:Key="InactiveIndicator" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="OutlineColor" Value="{StaticResource primaryColor}" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+
+        <AbsoluteLayout VerticalOptions="FillAndExpand">
+            <StackLayout AbsoluteLayout.LayoutBounds="0,1,1,1" 
+                         AbsoluteLayout.LayoutFlags="All"
+                         Spacing="0">
+
+                <StackLayout VerticalOptions="Start"
+                             Spacing="0"
+                             HeightRequest="150"
+                             BackgroundColor="{Binding CurrentTask, Converter={StaticResource TaskStateColorConverter}}">
+
+                    <Label HorizontalOptions="End" VerticalOptions="Center" Text="{Binding CurrentTask.Name}" FontSize="Medium"  TextColor="White" Margin="5,5,5,5" />
+
+                    <views:SchedulerView />
+                    
+                </StackLayout>
+
+                <StackLayout HeightRequest="25"
+                             BackgroundColor="White">
+
+                    <abstractions:CircleImage
+                            Margin="0,-85,0,0"
+                            BorderColor="{Binding CurrentTask, Converter={StaticResource TaskStateColorConverter}}"
+                            FillColor="{Binding CurrentTask, Converter={StaticResource TaskStateColorConverter}}"
+                            BorderThickness="3"
+                            HeightRequest="110"
+                            WidthRequest="110"
+                            Aspect="AspectFit"
+                            VerticalOptions="Center" HorizontalOptions="Center"
+                            Source="{local:ImageResource Assets/pause.jpg}"
+                            IsVisible="{Binding HasCurrentTask, Converter={StaticResource InverseBooleanConverter}}" />
+
+                    <abstractions:CircleImage
+                            Margin="0,-85,0,0"
+                            BorderColor="{Binding CurrentTask, Converter={StaticResource TaskStateColorConverter}}"
+                            FillColor="{Binding CurrentTask, Converter={StaticResource TaskStateColorConverter}}"
+                            BorderThickness="3"
+                            HeightRequest="110"
+                            WidthRequest="110"
+                            Aspect="AspectFit"
+                            VerticalOptions="Center" HorizontalOptions="Center"
+                            IsVisible="{Binding HasCurrentTask}"
+                            Source="{Binding CurrentTask.Picture.PictureUrl, Converter={StaticResource StringToImageSourceConverter}}">
+                    </abstractions:CircleImage>
+                </StackLayout>
+
+                <!--PAUSE-->
+                <ScrollView BackgroundColor="White"
+                            VerticalOptions="FillAndExpand"
+                            IsVisible="{Binding HasCurrentTask, Converter={StaticResource InverseBooleanConverter}}">
+
+                    <StackLayout Spacing="50" Margin="0,30,0,0">
+
+                        <Label HorizontalOptions="CenterAndExpand"
+                               HorizontalTextAlignment="Center"
+                               Text="{x:Static resx:UiTexts.Task_NoTaskPlanned}" />
+
+                        <StackLayout Spacing="20"
+                                     IsVisible="{Binding UpcomingTask, Converter={StaticResource ObjectToBooleanConverter}}">
+                            <Label HorizontalOptions="CenterAndExpand"
+                                   HorizontalTextAlignment="Center">
+                                <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{x:Static resx:UiTexts.Task_Next}"></Span>
+                                    <Span Text=": " />
+                                    <Span Text="{Binding UpcomingTask.Name}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                            </Label>
+
+                            <abstractions:CircleImage
+                                BorderColor="{StaticResource primaryColorDark}"
+                                FillColor="{StaticResource primaryColorDark}"
+                                BorderThickness="3"
+                                HeightRequest="110"
+                                WidthRequest="110"
+                                Aspect="AspectFit"
+                                Source="{Binding UpcomingTask.Picture.PictureUrl, Converter={StaticResource StringToImageSourceConverter}}">
+                            </abstractions:CircleImage>
+                        </StackLayout>
+
+                    </StackLayout>
+                </ScrollView>
+
+                <!--TASK-->
+                <ScrollView BackgroundColor="White"
+                            VerticalOptions="FillAndExpand"
+                            IsVisible="{Binding HasCurrentTask}">
+
+                    <StackLayout Spacing="20" Margin="0,30,0,0">
+
+                        <Label HorizontalOptions="End"
+                               Margin="0,0,10,-10"
+                               FontSize="Micro"
+                               Text="{Binding StepIndexText}" />
+
+                        <Grid HorizontalOptions="FillAndExpand" Padding="0, 30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="45" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="45" />
+                            </Grid.ColumnDefinitions>
+
+                            <Button 
+                                Grid.Column="0"
+                                HeightRequest="100"
+                                Style="{StaticResource faLabel}"
+                                Text="{StaticResource far-chevron-left}"
+                                BackgroundColor="Transparent"
+                                CornerRadius="0"
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="{StaticResource False}"
+                                IsVisible="{Binding IsFirstStep, Converter={StaticResource InverseBooleanConverter}}" />
+
+                            <Grid Grid.Column="1" IsVisible="{Binding IsLastStep, Converter={StaticResource InverseBooleanConverter}}">
+                                <Label HorizontalTextAlignment="Center"
+                                    VerticalTextAlignment="Center"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"
+                                    Text="{Binding CurrentStep.Text}" />
+                            </Grid>
+                            <Grid Grid.Column="1" IsVisible="{Binding IsLastStep}">
+                                <StackLayout HorizontalOptions="Center">
+                                    <Label HorizontalOptions="Center" HorizontalTextAlignment="Center" Text="{x:Static resx:UiTexts.Feedback_HowDoYouFeel}" />
+
+                                    <StackLayout Orientation="Horizontal"
+                                     HorizontalOptions="Center"
+                                     VerticalOptions="Center">
+
+                                        <Button Style="{StaticResource labelButton}"
+                                            BackgroundColor="{StaticResource feedbackGreen}"
+                                            Text="{StaticResource far-smile}"
+                                            Command="{Binding FeedbackCommand}"
+                                            CommandParameter="{x:Static models:DayTaskFeedback.Good}"
+                                            CornerRadius="50"
+                                            HeightRequest="50"
+                                            WidthRequest="50"
+                                            TextColor="White"
+                                            FontSize="Large" />
+
+                                        <Button Style="{StaticResource labelButton}"
+                                            BackgroundColor="{StaticResource feedbackYellow}"
+                                            Text="{StaticResource far-meh}"
+                                            Command="{Binding FeedbackCommand}"
+                                            CommandParameter="{x:Static models:DayTaskFeedback.Medium}"
+                                            CornerRadius="50"
+                                            HeightRequest="50"
+                                            WidthRequest="50"
+                                            TextColor="White"
+                                            FontSize="Large" />
+
+                                        <Button Style="{StaticResource labelButton}"
+                                            BackgroundColor="{StaticResource feedbackRed}"
+                                            Text="{StaticResource far-frown}"
+                                            Command="{Binding FeedbackCommand}"
+                                            CommandParameter="{x:Static models:DayTaskFeedback.Bad}"
+                                            CornerRadius="50"
+                                            HeightRequest="50"
+                                            WidthRequest="50"
+                                            TextColor="White"
+                                            FontSize="Large" />
+                                    </StackLayout>
+                                </StackLayout>
+                            </Grid>
+
+                            <Button 
+                                Grid.Column="2"
+                                HeightRequest="100"
+                                Style="{StaticResource faLabel}"
+                                Text="{StaticResource far-chevron-right}"
+                                BackgroundColor="Transparent"
+                                CornerRadius="0"
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="{StaticResource True}"
+                                IsVisible="{Binding IsLastStep, Converter={StaticResource InverseBooleanConverter}}" />
+                        </Grid>
+
+                        <views:TaskOverdueView />
+                        
+                    </StackLayout>
+                </ScrollView>
+
+                <ContentView HeightRequest="1" BackgroundColor="LightGray" />
+
+                <StackLayout VerticalOptions="End"
+                           BackgroundColor="White"
+                           Orientation="Horizontal">
+
+                    <views:NavigationButtonBarView />
+
+                </StackLayout>
+
+            </StackLayout>
+
+            <Button Style="{StaticResource emergencyButton}"
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    AbsoluteLayout.LayoutBounds="1.0,0.975,-1,-1"
+                    Text="{StaticResource far-bullhorn}"
+                    Command="{Binding EmergencyCommand}"
+                    />
+
+            <!--<Button Margin="20,5,20,20"
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    AbsoluteLayout.LayoutBounds="0,0,-1,0.5"
+                    BorderColor="{StaticResource primaryColorDark}"
+                    BorderWidth="5"
+                    HeightRequest="90"
+                    WidthRequest="90"
+                    CornerRadius="90"
+                    />-->
+
+        </AbsoluteLayout>
+
+    </ContentPage.Content>
+</ContentPage>

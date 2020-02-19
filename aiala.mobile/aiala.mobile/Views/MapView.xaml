@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="aiala.mobile.Views.MapView"
+             xmlns:viewModelBase="clr-namespace:xappido.Mobile.ViewModels;assembly=xappido.Mobile"
+             xmlns:controls="clr-namespace:aiala.mobile.Controls"
+             xmlns:models="clr-namespace:aiala.mobile.Models"
+             xmlns:views="clr-namespace:aiala.mobile.Views"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:abstractions="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             xmlns:resx="clr-namespace:aiala.mobile.Resources"
+             ios:Page.UseSafeArea="True"
+             BackgroundColor="{StaticResource primaryColorDark}"
+             viewModelBase:ViewModelLocator.AutoWireViewModel="true"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+
+        <AbsoluteLayout VerticalOptions="FillAndExpand">
+            <StackLayout AbsoluteLayout.LayoutBounds="0,1,1,1" 
+                         AbsoluteLayout.LayoutFlags="All"
+                         Spacing="0">
+
+                <StackLayout VerticalOptions="Start"
+                             Spacing="0"
+                             HeightRequest="70"
+                             BackgroundColor="{Binding CurrentTask, Converter={StaticResource TaskStateColorConverter}}">
+
+                    <Label HorizontalOptions="End" VerticalOptions="Center" Text="{Binding CurrentTask.Name}" FontSize="Medium"  TextColor="White" Margin="5,5,5,5" />
+
+                    <views:SchedulerView />
+                </StackLayout>
+
+                <ScrollView BackgroundColor="White"
+                        VerticalOptions="FillAndExpand">
+
+                    <StackLayout Spacing="0">
+
+                        <StackLayout VerticalOptions="Start"
+                             Spacing="0"
+                             HeightRequest="100"
+                             BackgroundColor="{StaticResource primaryColorDark}">
+                            <Label HorizontalOptions="Center" VerticalOptions="CenterAndExpand" Text="{x:Static resx:UiTexts.Navigate_Title}" FontSize="Large" TextColor="White" />
+                        </StackLayout>
+
+
+                        <Grid VerticalOptions="FillAndExpand"
+                              HorizontalOptions="CenterAndExpand"
+                              Margin="10,10,10,50">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="1*" />
+                            </Grid.RowDefinitions>
+
+                            <!--Task Location-->
+                            <StackLayout Grid.Column="0"
+                                         Grid.Row="0">
+                                <Grid HorizontalOptions="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="85" />
+                                    </Grid.ColumnDefinitions>
+                                    <abstractions:CircleImage
+                                        BorderColor="{StaticResource defaultImageBackground}"
+                                        BorderThickness="1"
+                                        Aspect="AspectFit"
+                                        FillColor="{StaticResource defaultImageBackground}"
+                                        HeightRequest="85"
+                                        WidthRequest="85">
+                                        <abstractions:CircleImage.Source>
+                                            <UriImageSource Uri="{Binding TaskLocation.Picture.PictureUrl}" />
+                                        </abstractions:CircleImage.Source>
+                                        <abstractions:CircleImage.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="{Binding TaskLocation}" />
+                                        </abstractions:CircleImage.GestureRecognizers>
+                                    </abstractions:CircleImage>
+
+                                    <Label Text="{StaticResource far-map-marker-alt-slash}"
+                                           Style="{StaticResource faLabel}"
+                                           FontSize="35"
+                                           TextColor="White"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center"
+                                           IsVisible="{Binding TaskLocation.Location, Converter={StaticResource ObjectToBooleanConverter}, ConverterParameter=inverse}">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="{Binding TaskLocation}" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </Grid>
+
+                                <Label Text="{Binding TaskLocation.Name}" FontSize="Small" HorizontalOptions="Center" />
+
+                            </StackLayout>
+
+                            <!--Current Location-->
+                            <StackLayout Grid.Column="1"
+                                         Grid.Row="0">
+                                <Grid HorizontalOptions="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="85" />
+                                    </Grid.ColumnDefinitions>
+                                    <abstractions:CircleImage
+                                        BorderColor="{StaticResource defaultImageBackground}"
+                                        BorderThickness="1"
+                                        Aspect="AspectFit"
+                                        FillColor="{StaticResource defaultImageBackground}"
+                                        HeightRequest="85"
+                                        WidthRequest="85">
+                                        <abstractions:CircleImage.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding NavigateCurrentCommand}" />
+                                        </abstractions:CircleImage.GestureRecognizers>
+                                    </abstractions:CircleImage>
+
+                                    <Label Text="{StaticResource far-question}"
+                                           Style="{StaticResource faLabel}"
+                                           FontSize="35"
+                                           TextColor="White"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding NavigateCurrentCommand}" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </Grid>
+
+                                <Label Text="{x:Static resx:UiTexts.Navigate_WhereAmI}" FontSize="Small" HorizontalOptions="Center" />
+
+                            </StackLayout>
+
+                            <!--Config Location 1-->
+                            <StackLayout Grid.Column="0"
+                                         Grid.Row="1"
+                                         IsVisible="{Binding Config1Location, Converter={StaticResource ObjectToBooleanConverter}}">
+                                <Grid HorizontalOptions="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="85" />
+                                    </Grid.ColumnDefinitions>
+                                    <abstractions:CircleImage
+                                        BorderColor="WhiteSmoke"
+                                        BorderThickness="1"
+                                        Aspect="AspectFit"
+                                        FillColor="WhiteSmoke"
+                                        HeightRequest="85"
+                                        WidthRequest="85"
+                                        Source="{Binding Config1Location.Picture.PictureUrl, Converter={StaticResource StringToImageSourceConverter}}">
+                                        <abstractions:CircleImage.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="{Binding Config1Location}" />
+                                        </abstractions:CircleImage.GestureRecognizers>
+                                    </abstractions:CircleImage>
+                                </Grid>
+
+                                <Label Text="{Binding Config1Location.Name}" FontSize="Small" HorizontalOptions="Center" />
+                                
+                            </StackLayout>
+                            
+                            <!--Config Locaton 2-->
+                            <StackLayout Grid.Column="1"
+                                         Grid.Row="1"
+                                         IsVisible="{Binding Config2Location, Converter={StaticResource ObjectToBooleanConverter}}">
+                                <Grid HorizontalOptions="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="85" />
+                                    </Grid.ColumnDefinitions>
+                                    <abstractions:CircleImage
+                                        BorderColor="WhiteSmoke"
+                                        BorderThickness="1"
+                                        Aspect="AspectFit"
+                                        FillColor="WhiteSmoke"
+                                        HeightRequest="85"
+                                        WidthRequest="85"
+                                        Source="{Binding Config2Location.Picture.PictureUrl, Converter={StaticResource StringToImageSourceConverter}}">
+                                        <abstractions:CircleImage.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="{Binding Config2Location}" />
+                                        </abstractions:CircleImage.GestureRecognizers>
+                                    </abstractions:CircleImage>
+                                </Grid>
+
+                                <Label Text="{Binding Config2Location.Name}" FontSize="Small" HorizontalOptions="Center" />
+
+                            </StackLayout>
+                            
+                        </Grid>
+                        
+                    </StackLayout>
+                </ScrollView>
+
+                <ContentView HeightRequest="1" BackgroundColor="LightGray" />
+
+                <StackLayout VerticalOptions="End"
+                             BackgroundColor="White"
+                             Orientation="Horizontal">
+
+                    <views:NavigationButtonBarView />
+
+                </StackLayout>
+
+            </StackLayout>
+
+            <Button Style="{StaticResource emergencyButton}"
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    AbsoluteLayout.LayoutBounds="1.0,0.975,-1,-1"
+                    Text="{StaticResource far-bullhorn}"
+                    Command="{Binding EmergencyCommand}"
+                    />
+
+            <abstractions:CircleImage
+                Margin="20,5,20,20"
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                AbsoluteLayout.LayoutBounds="0,0,-1,0.5"
+                BorderColor="{Binding CurrentTask, Converter={StaticResource TaskStateColorConverter}}"
+                FillColor="{Binding CurrentTask, Converter={StaticResource TaskStateColorConverter}}"
+                BorderThickness="2"
+                HeightRequest="90"
+                WidthRequest="90"
+                Aspect="AspectFill"
+                Source="{Binding CurrentTask.Picture.PictureUrl, Converter={StaticResource StringToImageSourceConverter}}">
+            </abstractions:CircleImage>
+
+        </AbsoluteLayout>
+
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="aiala.mobile.Views.NavigationButtonBarView"
+             xmlns:viewModelBase="clr-namespace:xappido.Mobile.ViewModels;assembly=xappido.Mobile"
+             viewModelBase:ViewModelLocator.AutoWireViewModel="true"
+             xmlns:models="clr-namespace:aiala.mobile.Models"
+             BackgroundColor="White">
+  <ContentView.Content>
+        <StackLayout Orientation="Horizontal"
+                     Margin="0"
+                     Padding="0"
+                     HeightRequest="60">
+
+            <Button Text="{StaticResource far-home}"
+                    Style="{StaticResource navigationButton}"
+                    IsEnabled="{Binding NavigationState, Converter={StaticResource NavigationStateConverter}, ConverterParameter={x:Static models:NavigationState.Home}}"
+                    Command="{Binding NavigateCommand}" CommandParameter="{x:Static models:NavigationState.Home}"
+                    />
+
+            <Button Text="{StaticResource far-play}"
+                    Style="{StaticResource navigationButton}"
+                    IsEnabled="{Binding NavigationState, Converter={StaticResource NavigationStateConverter}, ConverterParameter={x:Static models:NavigationState.Task}}"
+                    Command="{Binding NavigateCommand}" CommandParameter="{x:Static models:NavigationState.Task}"
+                    />
+
+            <Button Text="{StaticResource far-map}"
+                    Style="{StaticResource navigationButton}"
+                    IsEnabled="{Binding NavigationState, Converter={StaticResource NavigationStateConverter}, ConverterParameter={x:Static models:NavigationState.Map}}"
+                    Command="{Binding NavigateCommand}" CommandParameter="{x:Static models:NavigationState.Map}"
+                    />
+
+            <Button Text="{StaticResource far-images}"
+                    Style="{StaticResource navigationButton}"
+                    IsEnabled="{Binding NavigationState, Converter={StaticResource NavigationStateConverter}, ConverterParameter={x:Static models:NavigationState.Picture}}"
+                    Command="{Binding NavigateCommand}" CommandParameter="{x:Static models:NavigationState.Picture}"
+                    />
+
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

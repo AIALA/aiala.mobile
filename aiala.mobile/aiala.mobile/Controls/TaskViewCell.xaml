@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             xmlns:models="clr-namespace:aiala.mobile.Models"
+             x:Class="aiala.mobile.Controls.TaskViewCell">
+    <ContentView.Content>
+        <StackLayout Orientation="Horizontal">
+            <!--<BoxView Color="LightBlue" WidthRequest="2" />-->
+            <Grid VerticalOptions="CenterAndExpand"
+                HorizontalOptions="FillAndExpand"
+                BackgroundColor="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="60" />
+                </Grid.ColumnDefinitions>
+
+                <StackLayout VerticalOptions="Center">
+                    <Label Text="{Binding Name}" FontAttributes="Bold" />
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{Binding Start, StringFormat='{}{0:hh\\:mm}'}" FontSize="Small" />
+                        <Label Text=" - " />
+                        <Label Text="{Binding End, StringFormat='{}{0:hh\\:mm}'}" />
+                    </StackLayout>
+                </StackLayout>
+
+                <Grid Grid.Column="1">
+                    <controls:CircleImage Aspect="AspectFill"
+                        HeightRequest="60"
+                        WidthRequest="60"
+                        BorderThickness="2"
+                        VerticalOptions="Center" HorizontalOptions="Center"
+                        BorderColor="{Binding ., Converter={StaticResource TaskStateColorConverter}}"
+                        Source="{Binding Picture.PictureUrl, Converter={StaticResource StringToImageSourceConverter}}" />
+                    
+                    <Label Text="{StaticResource far-check}"
+                           Style="{StaticResource faLabel}"
+                           FontSize="Large"
+                           TextColor="{StaticResource feedbackGreen}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           IsVisible="{Binding State, Converter={StaticResource TaskStateConverter}, ConverterParameter={x:Static models:DayTaskState.Done}}"
+                           />
+                </Grid>
+
+            </Grid>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>
